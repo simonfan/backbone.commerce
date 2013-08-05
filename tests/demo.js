@@ -50,6 +50,9 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 		},
 	});
 
+	/**
+	 * The order model.
+	 */
 	var order = window.order = new Order({}, {
 		cart: cart,
 	});
