@@ -7,6 +7,18 @@ require.config({
 		'underscore': 'components/underscore/underscore',
 		'backbone': 'components/backbone/backbone',
 
+		'jquery.fill': 'components/jquery.fill/jquery.fill',
+
+		'backbone.listview': 'components/backbone.listview/backbone.listview',
+		'backbone.modelview': 'components/backbone.modelview/backbone.modelview',
+		'backbone.formview': 'components/backbone.formview/backbone.formview',
+
+		'backbone.quantified': 'components/backbone.quantified/backbone.quantified',
+
+		'backbone.commerce.cart': '../backbone.commerce.cart',
+		'backbone.commerce.order': '../backbone.commerce.order',
+		'backbone.commerce': '../backbone.commerce',
+
 		// DEMO
 		'demo-main': 'demo',	// the main file for the demo
 

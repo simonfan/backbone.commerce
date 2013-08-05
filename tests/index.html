@@ -15,14 +15,59 @@
 	</script>
 
 	<script type="text/javascript" data-main="main.js" src="components/requirejs/require.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="../component.css">
 	
+
+	<style type="text/css">
+		#shop-items {
+
+		}
+
+		#checkout-table {
+			
+		}
+
+	</style>
+
 </head>
 
 <body>	
 
-	This is index.html, running demo, using the component.css stylesheet.
+	
+
+
+	<ul id="shop-items"></ul>
+
+
+
+	<form>
+
+		<table id="checkout-table"></table>
+
+		<div id="order-data">
+			Total: <div class="produtos-custo"></div>
+			<input class="produtos-custo" name="produtos-custo" type="hidden">
+
+			<br><br>
+
+			CEP: <input class="address cep" name="cep" type="text">
+			UF: <select class="address uf" name="uf">
+					<option value="SP">SP</option>
+					<option>MG</option>
+					<option>RJ</option>
+					<option>PA</option>
+				</select>
+			Cidade: <input class="address cidade" name="cidade" type="text" disabled>
+			Logradouro: <input class="address logradouro" name="logradouro" type="text" disabled>
+			Complemento: <input class="address complemento" name="complemento" type="text"><br>
+			Envio: <select class="address envio-metodo">
+					<option value="sedex">Sedex</option>
+					<option value="pac">PAC</option>
+				</select><br>
+			Custo de envio: <input type="text" class="address envio-custo" disabled>
+		</div>
+
+	</form>
+
 
 	<br>
 	<a href="tests.html">Go to unit tests</a>
