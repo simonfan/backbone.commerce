@@ -36,6 +36,28 @@ define(['backbone.quantified'], function(Quantified) {
 
 			return total;
 		},
+
+		/**
+		 * Returns a list of products 
+		 */
+		productList: function() {
+			var list = [];
+
+			this.each(function(product) {
+				var qtty = product.quantity();
+
+				while (qtty) {
+					var attr = _.clone(product.attributes);
+
+					delete attr.quantity;
+
+					list.push(attr);
+					qtty -= 1;
+				}
+			});
+
+			return list;
+		},
 	});
 
 	return Cart;

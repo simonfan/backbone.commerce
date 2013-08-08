@@ -182,21 +182,71 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 	/** 
 	 * The cart view constructor
 	 */
-	var CartView = ShopView.extend({
+	var CartView = ListView.extend({
+
 		initialize: function(options) {
-			ShopView.prototype.initialize.call(this, options);
+			// call listView initialize
+			ListView.prototype.initialize.call(this, options);
 
-			_.bindAll(this, 'updateQuantity');
+			_.bindAll(this, 'increase', 'decrease','updateQuantity');
 
+			/**
+			 * The collection of products that may be bought.
+			 */
+			this.products = options.products;
+
+			/**
+			 * The commerce cart collection
+			 */
+			this.cart = options.cart;
+
+			/**
+			 * Whenever the cart emits an increase or decrease event, updat ethe quantoity displas in the 
+			 * view.
+			 */
 			this.cart.on('increase decrease', this.updateQuantity);
 		},
 
+		events: {
+			'click .increase': 'increase',
+			'click .decrease': 'decrease'
+		},
+
+		/**
+		 * Increases one item in the cart collection.
+		 */
+		increase: function(e) {
+			var $target = $(e.target),
+				prodId = $target.attr('data-prod-id'),
+				// use the collection already provided by ListView to get the product.
+				product = this.products.get(prodId);
+
+			// add 1 item to the cart.
+			this.cart.increase(product, 1);
+		},
+
+		/**
+		 * Decreases one item in the cart collection
+		 */
+		decrease: function(e) {
+			var $target = $(e.target),
+				prodId = $target.attr('data-prod-id'),
+				product = this.products.get(prodId);
+
+			this.cart.decrease(product, 1);
+		},
+
+		/**
+		 * Updates quantity display on the view.
+		 */
 		updateQuantity: function(product, quantity) {
 			var $tr = this.$el.find('tr[data-prod-id="'+ product.id +'"]');
 
 			$tr.find('.quantity').html(quantity);
 		},
 	});
+
+
 	/**
 	 * Cart view instance
 	 */
