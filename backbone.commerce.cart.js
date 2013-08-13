@@ -1,11 +1,35 @@
 define(['backbone.quantified'], function(Quantified) {
 
 	/**
+	 * Product extends Quantified.Model's functionality.
+	 * Provides convenience price and total methods.
+	 */
+	var Product = Quantified.Model.extend({
+		/**
+		 * Proxy method that uses the Cart's price method.
+		 */
+		price: function() {
+			return this.collection.price(this);
+		},
+
+		/**
+		 * Calculates the total cost for the product.
+		 */
+		total: function() {
+			return this.price() * this.quantity();
+		},
+	});
+
+	/**
 	 * Cart Collection extends the backbone quantified collection functionalities
 	 * just by providing price calculation methods.
 	 * 
 	 */
 	var Cart = Quantified.Collection.extend({
+		/**
+		 * Uses Product model, which is just an extension of Quantified.Model
+		 */
+		model: Product,
 
 		initialize: function(models, options) {
 			Quantified.Collection.prototype.initialize.call(this, models, options);
@@ -26,15 +50,28 @@ define(['backbone.quantified'], function(Quantified) {
 		},
 
 		/**
-		 * Calculates the total amount for the products in the cart.
+		 * Polymorphic method:
+		 * 	- no arguments: Calculates the total amount for the products in the cart.
+		 *	- model argument: calculates the total amount for the given product.
 		 */
-		total: function() {
-			var _this = this,
-				total = this.reduce(function(total, cartProduct) {
-					return total + ( _this.price(cartProduct) * cartProduct.quantity() );
-				}, 0);
+		total: function(model) {
 
-			return total;
+			if (typeof model === 'undefined') {
+				// no model passed, return full total.
+				var _this = this,
+					total = this.reduce(function(total, cartProduct) {
+						return total + ( _this.price(cartProduct) * cartProduct.quantity() );
+					}, 0);
+
+				return total;
+
+			} else {
+				// model is set, get the total for the given product.
+				var id = typeof model === 'object' ? model.id : model,
+					product = this.get(id);
+
+				return product.total();
+			}
 		},
 
 		/**

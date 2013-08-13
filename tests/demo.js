@@ -240,9 +240,11 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 		 * Updates quantity display on the view.
 		 */
 		updateQuantity: function(product, quantity) {
+
 			var $tr = this.$el.find('tr[data-prod-id="'+ product.id +'"]');
 
-			$tr.find('.quantity').html(quantity);
+			$tr.find('.quantity').html(product.quantity());
+			$tr.find('.product-total').html('- R$ '+ product.total());
 		},
 	});
 
@@ -260,7 +262,7 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 			return model.attributes;
 		},
 		itemTemplate: function(data) {
-			return '<tr data-prod-id="'+ data.id +'"><td>'+ data.name +'</td><td class="increase" data-prod-id="'+ data.id +'"> ADD </td><td class="decrease" data-prod-id="'+ data.id +'"> REMOVE </td><td class="quantity">'+ data.quantity +'</td></tr>'
+			return '<tr data-prod-id="'+ data.id +'"><td>'+ data.name +'</td><td class="increase" data-prod-id="'+ data.id +'"> ADD </td><td class="decrease" data-prod-id="'+ data.id +'"> REMOVE </td><td class="quantity">'+ data.quantity +'</td><td class="product-total">'+ data.productTotal +'</td></tr>'
 		},
 		itemSelector: function(model) {
 			return 'tr[data-prod-id="'+ model.id +'"]';
