@@ -1,16 +1,17 @@
 define(['backbone','backbone.commerce.cart'], function(Backbone, Cart) {
 	var Order = Backbone.Model.extend({
-		defaults: {
-			products: [],		// array containing products ordered.
-			total: 0,			// the order total amount to be paid for
-		},
 
 		initialize: function(attributes, options) {
 			/**
 			 * Options:
-			 * 		products: Backbone.Collection
-			 * 		price: function(model) { return model.get('price-of-product') }
+			 *		cart: Backbone.Commerce.Cart collection.
+			 *		totalAttr: 'string': the attribute used to save the total amount in the order.
 			 */
+			this.__commerceOrderOptions = _.defaults(options, {
+				totalAttr: 'total',
+				productsAttr: false,
+				descriptionAttr: false
+			});
 
 			/**
 			 * Product collection. May either be a Backbone.Commerce.Cart
@@ -22,41 +23,39 @@ define(['backbone','backbone.commerce.cart'], function(Backbone, Cart) {
 			 * Listen to events
 			 */
 			// when a new product is added to the cart
-			this.listenTo(this.cart, 'add remove reset increase decrease', this._addremres);
+			this.listenTo(this.cart, 'add remove reset increase decrease', this.update);
 
 			// start things up
-			this.total();
-			this.products();
+			this.update();
 		},
 
 		/**
 		 * Hnadles changes on the product collection
 		 */
-		_addremres: function() {
+		update: function() {
 			// update total
-			this.total();
+			var totalAttr = this.__commerceOrderOptions.totalAttr;
+			if (totalAttr) { this.set(totalAttr, this.total()); }
 
 			// update products
-			this.products();
+			var productsAttr = this.__commerceOrderOptions.productsAttr;
+			if (productsAttr) { this.set(productsAttr, this.products()); }
+			
+			// update description
+			var descriptionAttr = this.__commerceOrderOptions.descriptionAttr;
+			if (descriptionAttr) { this.set(descriptionAttr, this.describe()); }
 		},
 
 		total: function() {
-			var total = this.cart.total();
-
-			this.set('productTotal', total);
-
-			return total;
+			return this.cart.total();
 		},
 
-		/**
-		 * Gets the json value from the collection
-		 */
 		products: function() {
-			var products = this.cart.toJSON();
+			return this.cart.products();
+		},
 
-			this.set('products', products);
-
-			return products;
+		describe: function() {
+			return this.cart.describe();
 		},
 	});
 

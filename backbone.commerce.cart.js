@@ -18,6 +18,18 @@ define(['backbone.quantified'], function(Quantified) {
 		total: function() {
 			return this.price() * this.quantity();
 		},
+
+		/**
+		 * Describes the order for this product
+		 */
+		describe: function() {
+			return {
+				id: this.id,
+				quantity: this.quantity(),
+				price: this.price(),
+				total: this.total(),
+			};
+		}
 	});
 
 	/**
@@ -77,7 +89,7 @@ define(['backbone.quantified'], function(Quantified) {
 		/**
 		 * Returns a list of products 
 		 */
-		productList: function() {
+		products: function() {
 			var list = [];
 
 			this.each(function(product) {
@@ -94,6 +106,20 @@ define(['backbone.quantified'], function(Quantified) {
 			});
 
 			return list;
+		},
+
+		/**
+		 * Returns a descriptive object of the products in cart
+		 */
+		describe: function() {
+			var _this = this,
+				description = {};
+
+			this.each(function(product, id) {
+				description[ id ] = product.describe();
+			});
+
+			return description;
 		},
 	});
 
