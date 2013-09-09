@@ -54,7 +54,7 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 	 * The order model.
 	 */
 	var order = window.order = new Order({}, {
-		totalAttr: 'total',
+		totalAttr: 'products-total',
 		productsAttr: 'products',
 		descriptionAttr: 'description',
 		cart: cart,
@@ -83,7 +83,7 @@ define(['backbone.commerce','backbone.listview','backbone.formview'], function(C
 		el: $('#order-data'),
 		model: order,
 		map: {
-			total: '.produtos-custo',
+			'products-total': '.produtos-custo',
 			products: '.produtos',
 			description: '.description',
 
